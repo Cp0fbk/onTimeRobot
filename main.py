@@ -44,4 +44,9 @@ async def run_bot():
                 await bot.send_message(chat_id=CHAT_ID, text="❌ Lỗi khi gửi thông báo")
 
 if __name__ == '__main__':
+    # Đặt cổng từ biến môi trường (Render sẽ tự động làm điều này)
+    port = int(os.environ.get("PORT", 8080))  # Nếu không có PORT, mặc định là 8080
+    print(f"Server is running on port {port}...")
+
+    # Chạy bot
     asyncio.run(run_bot())
