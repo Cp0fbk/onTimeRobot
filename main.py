@@ -3,6 +3,7 @@ import asyncio
 import requests
 from bs4 import BeautifulSoup
 from telegram import Bot
+from http.server import SimpleHTTPRequestHandler, HTTPServer
 
 # === Cấu hình bot từ biến môi trường ===
 TOKEN = os.getenv("BOT_TOKEN")
@@ -48,5 +49,16 @@ if __name__ == '__main__':
     port = int(os.environ.get("PORT", 10000))
     print(f"Server is running on port {port}...")
 
-    # Chạy bot
+    # Tạo một HTTP server trống để Render nhận diện cổng
+    def run_http_server():
+        server_address = ('', port)
+        httpd = HTTPServer(server_address, SimpleHTTPRequestHandler)
+        print(f'Starting HTTP server on port {port}...')
+        httpd.serve_forever()
+
+    # Chạy HTTP server trong một luồng riêng
+    import threading
+    threading.Thread(target=run_http_server, daemon=True).start()
+
+    # Chạy bot Telegram
     asyncio.run(run_bot())
