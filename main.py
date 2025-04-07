@@ -43,6 +43,9 @@ async def run_bot():
                 last_data = new_data
             except Exception:
                 await bot.send_message(chat_id=CHAT_ID, text="❌ Lỗi khi gửi thông báo")
+        else:
+            # Gửi tin nhắn "Chưa có DN mới" nếu dữ liệu không thay đổi
+            await bot.send_message(chat_id=CHAT_ID, text="⏸️ Chưa có DN mới.")
 
 if __name__ == '__main__':
     # Lấy cổng từ biến môi trường, nếu không có sẽ mặc định là 10000
