@@ -1,11 +1,12 @@
+import os
 import asyncio
 import requests
 from bs4 import BeautifulSoup
 from telegram import Bot
 
-# === Cấu hình bot ===
-TOKEN = '7480548667:AAGFT6pEYlSGw2JSbCSC82fTd63C0lJNWzc'
-CHAT_ID = '6182003634'
+# === Cấu hình bot từ biến môi trường ===
+TOKEN = os.getenv("BOT_TOKEN")
+CHAT_ID = os.getenv("CHAT_ID")
 URL = 'https://internship.cse.hcmut.edu.vn/'
 
 bot = Bot(token=TOKEN)
@@ -28,7 +29,7 @@ async def run_bot():
         return
 
     while True:
-        await asyncio.sleep(600)  # 10 phút
+        await asyncio.sleep(600)
         new_data = fetch_data()
         if new_data is None:
             await bot.send_message(chat_id=CHAT_ID, text="⚠️ Lỗi khi cập nhật dữ liệu.")
@@ -39,7 +40,7 @@ async def run_bot():
             try:
                 await bot.send_message(chat_id=CHAT_ID, text=message)
                 last_data = new_data
-            except Exception as e:
+            except Exception:
                 await bot.send_message(chat_id=CHAT_ID, text="❌ Lỗi khi gửi thông báo")
 
 if __name__ == '__main__':
